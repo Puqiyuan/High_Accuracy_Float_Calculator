@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
 int dot_pos(char *in, int len);
 
 int test_data(char *in)//Test the data.
