@@ -123,31 +123,61 @@ int add(int *res, int *ini1, int *ini2, int max_len)
 }
 
 
-int show(int *res, int len, int res_pos, char op, int indi)// Show the computing result.
+int show_add(int *res, int len, int res_pos)// Show the computing result of addition.
 {
   int i;
 
-  if (op == '-' && indi == 2)
-    printf("-");
-
-  
   if (res[0] != 0)
     printf("%d", res[0]);
-    
+  
   for (i = 1; i <= len - 1; i++)
     {
-      if (op == '+' && i == res_pos + 1)// Because add maybe create carry bit,
+      if (i == res_pos + 1)// Because add maybe create carry bit,
 	//so dot position different.
 	printf(".");
-      
-      if (op == '-' && i == res_pos)
-	printf(".");
-      
+
       printf("%d", res[i]);
     }
     
-  printf("\n");
+  printf ("\n");
 
+  return 0;
+}
+
+
+int show_sub(int *res, int len, int res_pos, int indi)
+{
+  int i = 0, start;
+
+  if (indi == 2)
+    printf("-");
+  
+  while (i <= len - 1 && i != res_pos)
+    {
+      if (res[i] == 0)
+	{
+	  i++;
+	  continue;
+	}
+
+      break;
+    }
+
+  start = i;
+
+  if (start == res_pos)
+    printf("0");
+  
+  for (; start <= len - 1; start++)
+    {
+      if (start == res_pos)
+	printf(".");
+
+      printf("%d", res[start]);
+    }
+
+  printf("\n");
+  
   return 0;
 }
 
@@ -220,13 +250,16 @@ int sub(int *res, int *ini1, int *ini2, int max_len, int indi)// Subtraction.
 }
 
 
+
+
+
 int calc(int *res, int *ini1, int *ini2, char op, int max_len, int res_pos)
 // Calculate by operation
 {
   if (op == '+')
     {
       add(res, ini1, ini2, max_len);
-      show(res, max_len + 1, res_pos, op, -1);
+      show_add(res, max_len + 1, res_pos);
     }
 
   else if (op == '-')
@@ -238,7 +271,7 @@ int calc(int *res, int *ini1, int *ini2, char op, int max_len, int res_pos)
       else
 	{
 	  sub(res, ini1, ini2, max_len, indi);
-	  show(res, max_len + 1, res_pos, op, indi);
+	  show_sub(res, max_len, res_pos, indi);
 	}
     }
 
