@@ -1,7 +1,7 @@
 /*
-  Every time, if you confusing one function, say it's fun, you can test it's effect by function 
-  that begin with t, aka t_fun. The function end with _m show that is for multiplication operation,
-  end with _d is for division operation.
+  Every time, if you confused one function, say it's "fun", you can test it's effect by function 
+  that begin with t, aka "t_fun"". The function end with _m show that is for multiplication 
+  operation,  end with _d is for division operation.
  */
 
 
@@ -12,7 +12,8 @@
 int dot_pos(char *in, int len);
 int show_mul(int *res_m, char *in1, char *in2, int len1, int len2, int pos1, int pos2);
 
-int test_data(char *in)//Test the data, the data only including number digit or dot.
+int test_data(char *in)//Test the data, the data only including number digit or dot. The input as
+//string form.
 {
   int i, len = strlen(in);
 
@@ -28,7 +29,9 @@ int test_data(char *in)//Test the data, the data only including number digit or 
 
 int res_dot(char *in1, char *in2, int len1, int len2)
 //Decide the position of dot in add and sub computing result, notice this function is not for
-//multiplication and division operation.
+//multiplication and division operation. The first argument is input1 as string form, the second
+//argument is input2 as string form, the third argument is the length of the first argument, the last
+//argument is the length of the second argument.
 {
   if (dot_pos(in1, len1) >= dot_pos(in2, len2))
     return dot_pos(in1, len1);
@@ -392,7 +395,10 @@ int init_tmp(int *tmp_m, int len)// This function is not use.
 
 int add_m(int *res_m, int *tmp_m, int width_tmp, int offset)// Add for multiplication, the result
 //is store in the first argument, and the second argument was added. the third argument is the
-//length of the added number, the last number is 
+//length of the added number, the last number is offset, for example, add 43553354 and 3452355, 
+//4355335|4               435533|54                43553|354
+//       |  offset is 1,        |   offset is 2,        |    offset is 3.
+//3452355|               3452355|                3452355|
 {
   int i = 999998 - offset, tmp, jw = 0;
   int j = width_tmp - 1;
@@ -418,27 +424,33 @@ int add_m(int *res_m, int *tmp_m, int width_tmp, int offset)// Add for multiplic
 }
 
 
-int mul(int *ini_m1, int *ini_m2, int *res_m, int width_m1, int width_m2)
+int mul(int *ini_m1, int *ini_m2, int *res_m, int width_m1, int width_m2)// The multiplication
+//operation, the first and second argument are inputs, and result of multiplied is stored in the
+//third argument, and the forth argument is the length of the first argument, the last argument is
+//the length of the second argument.
 {
   int i, offset = 0;
-  int *tmp_m = (int*)malloc((width_m1 + 1) * sizeof(int));
+  int *tmp_m = (int*)malloc((width_m1 + 1) * sizeof(int));// This variable is store temporary
+  //multiplied result.
 
   for (i = width_m2 - 1; i >= 0; i--)
     {
-      mul_sin(tmp_m, ini_m1, width_m1, ini_m2[i]);
+      mul_sin(tmp_m, ini_m1, width_m1, ini_m2[i]);//For each element in the second argument,
+      //multiply the the first argument.
 
-      add_m(res_m, tmp_m, width_m1 + 1, offset);
+      add_m(res_m, tmp_m, width_m1 + 1, offset);// Add the temporary result.
 
       init_tmp(tmp_m, width_m1 + 1);
       
-      offset++;
+      offset++;//The add in multiplication is offset.
     }
   
   return 0;
 }
 
 
-int find(int *res_m, int dot_pos)
+int find(int *res_m, int dot_pos)// Find the first no zero element in multiplication result until
+//dot position, the first argument is result, and the second is the position of dot in result.
 {
   int i = 0;
 
@@ -452,7 +464,8 @@ int find(int *res_m, int dot_pos)
 }
 
 
-int dot_mul(char *in1, char *in2, int len1, int len2, int pos1, int pos2)
+int dot_mul(char *in1, char *in2, int len1, int len2, int pos1, int pos2)// Identify the dot
+//position of multiplication result.
 { 
   int dot_left = (len1 - pos1 - 1 + len2 - pos2 - 1);
 
@@ -460,18 +473,23 @@ int dot_mul(char *in1, char *in2, int len1, int len2, int pos1, int pos2)
 }
 
 
-int show_mul1(int *res_m, char *in1, char *in2, int len1, int len2, int pos1, int pos2)
+int show_mul1(int *res_m, char *in1, char *in2, int len1, int len2, int pos1, int pos2)// Show the
+//result of multiplication result. The first argument is result, the second argument is input1 as
+//string form, and the third argument is input2 as string form, the forth argument is the length of
+//the second argument, the fifth argument is the length of the third argument, the sixth argument is
+//the dot position of the second argument, and the last argument is the dot position of the third
+//argument.
 {
-  int dot_pos = dot_mul(in1, in2, len1, len2, pos1, pos2);
-  int no_z = find(res_m, dot_pos);
+  int dot_pos = dot_mul(in1, in2, len1, len2, pos1, pos2);// Identify the dot position of result.
+  int no_z = find(res_m, dot_pos);// Find the first no zero element in result.
   int i;
 
-  for (i = no_z; i <= dot_pos; i++)
+  for (i = no_z; i <= dot_pos; i++)// Output before dot position part.
     printf("%d", res_m[i]);
 
-  printf(".");
+  printf(".");// Print dot.
 
-  for (i = (dot_pos + 1); i <= 999998; i++)
+  for (i = (dot_pos + 1); i <= 999998; i++)// Output after dot position part.
     printf("%d", res_m[i]);
       
   printf("\n");
@@ -480,7 +498,8 @@ int show_mul1(int *res_m, char *in1, char *in2, int len1, int len2, int pos1, in
 }
 
 
-int add_dot_m(char *in1, char *in2)
+int add_dot_m(char *in1, char *in2)// If the input no dot, add it at length. The two arguments are
+//inputs as string form.
 {
   int len1 = strlen(in1);
   int len2 = strlen(in2);
@@ -497,7 +516,8 @@ int add_dot_m(char *in1, char *in2)
 
 int main(int argc, char *argv[])
 {
-  char in1[999999], in2[999999], op;
+  char in1[999999], in2[999999], op;// in1 and in2 are inputs as string form, op is operation such
+  //as +, -, *, /.
   int *res_m = (int*)malloc(999999 * sizeof(int));
 
   printf("Please input the operation that you want(+, -, * or /): ");
@@ -509,7 +529,7 @@ int main(int argc, char *argv[])
   store(in2);
 
   if (op == '*')
-    add_dot_m(in1, in2);
+    add_dot_m(in1, in2);//If the user want multiplication, first add dot at end if the input no dot.
 
   int len1 = strlen(in1);
   int pos1 = dot_pos(in1, len1);
