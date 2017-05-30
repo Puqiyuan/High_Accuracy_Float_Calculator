@@ -9,6 +9,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+
 int dot_pos(char *in, int len);
 int show_mul(int *res_m, char *in1, char *in2, int len1, int len2, int pos1, int pos2);
 
@@ -340,7 +341,7 @@ int dot_pos(char *in, int len)// Return the dot position of input string.
 }
 
 
-int ctoi_m(char *in, int len, int *res_m)// Test function.
+int ctoi_m(char *in, int len, int *res_m)// Converting function for multiplication.
 {
   int i, k = 0;
 
@@ -586,6 +587,11 @@ int main(int argc, char *argv[])
 	      sub(res, ini1, ini2, max_len, indi);
 	      show_sub(res, max_len, res_pos, indi);
 	    }
+	}
+
+      else if (op == '/')
+	{
+	  
 	}
 
       else
